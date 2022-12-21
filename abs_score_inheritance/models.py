@@ -36,7 +36,6 @@ class EmployeeAccess(models.Model):
      - можно выбрать все AccessScore
      - интуитивная объектная модель и полиформизм, получается что Department является AccessScore
      - не нужно самостоятельно создавать AccessScore
-     - хорошо выглядит в админке
      
     Минусы:
      - при выборке из базы Project и Department всегда делается join на таблицу AccessScore

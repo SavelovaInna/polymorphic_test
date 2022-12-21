@@ -12,12 +12,18 @@ class Employee(models.Model):
 class Project(models.Model):
     name = models.CharField('Наименование', max_length=100)
 
+    def __str__(self):
+        return self.name
+
     def get_all_employees(self):
         return EmployeeAccess.objects.filter(score__project=self)
 
 
 class Department(models.Model):
     name = models.CharField('Наименование', max_length=100)
+
+    def __str__(self):
+        return self.name
 
     def get_all_employees(self):
         return EmployeeAccess.objects.filter(score__department=self)
@@ -51,15 +57,16 @@ def get_project_employees(project):
 def get_department_employees(department):
     return EmployeeAccess.objects.filter(score__department=department)
 
+
 """
     Плюсы:
-     - есть абстракция олиформизм, получается что Department является AccessScore
-     - не нужно самостоятельно создавать AccessScore
-     - хорошо выглядит в админке
+     - есть некоторая абстракция в которую можно инкапсулитровать логику
 
     Минусы:
-     - при выборке из базы Project и Department всегда делается join на таблицу AccessScore
-     - django не поддерживает множественное наследование моделей, поэтому применить такой подход еще раз не получится,
-    если потребуется расширять логику моделей Project или Department
-
+     - Сложная валидация
+     - Добавление еще одного типа объектов для выдачи прав приводит к миграции и еще большему усложнению
+     - Нет общих методов для получения доступов для проектов и подразделений
+     
+     - нужен постоянный join на AccessScore
+     - нужно отдельно создавать AccessScore
 """
